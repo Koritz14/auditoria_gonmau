@@ -26,7 +26,7 @@ El objetivo del payload es verificar si la aplicación interpreta y ejecuta cód
 
 ### Evidencia 1 – Ejecución de Código JavaScript
 
-![alt text](img_gonmau/sql_injection.png)
+![docs_gonmau/img_gonmau/xss_reflected.png](img_gonmau/xss_reflected.png)
 
 **Figura 2.** Ejecución exitosa de un ataque Cross-Site Scripting (XSS). La aplicación procesa el código JavaScript inyectado y el navegador muestra una ventana emergente con el mensaje "XSS", demostrando que el script fue ejecutado correctamente.
 
