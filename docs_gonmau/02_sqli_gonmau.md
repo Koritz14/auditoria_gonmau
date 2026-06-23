@@ -23,7 +23,7 @@ Tras usar el payload **' OR '1'='1** se observo el siguiente resultado:
 
 En el backend la aplicacion probablemente ejecuta una consulta similar a: 
 
-**SELECT first_name, last_name FROM users WHERE id = '<input>';**
+**SELECT first_name, last_name FROM users WHERE id = 'input';**
 
 al injectar **' OR '1'='1** la consulta se transforma en:
 
@@ -52,7 +52,7 @@ Un atacante podría acceder a:
 * Datos financieros
 * Posibles credenciales si están mal almacenadas
 
-**Fraude financiero**
+**3. Fraude financiero**
 * Manipulación de registros
 * Suplantación de usuarios
 * Transferencias no autorizadas
