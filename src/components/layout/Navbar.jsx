@@ -9,7 +9,7 @@ function Navbar({ activeSection }) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl shadow-sm dark:border-slate-800/70 dark:bg-slate-950/80">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -24,7 +24,7 @@ function Navbar({ activeSection }) {
             <p className="text-[11px] uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">
               Auditoría de Seguridad Web
             </p>
-            <h1 className="text-lg font-semibold tracking-tight text-slate-950 dark:text-slate-100">
+            <h1 className="text-base font-semibold tracking-tight text-slate-950 dark:text-slate-100 sm:text-lg">
               TI3034 – Informe interactivo
             </h1>
           </div>
@@ -33,7 +33,7 @@ function Navbar({ activeSection }) {
         <button
           type="button"
           onClick={toggleTheme}
-          className="inline-flex h-10 items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 px-4 text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-200 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
+          className="inline-flex h-10 items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 px-3 text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-200 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 sm:px-4"
         >
           {theme === 'dark' ? (
             <Sun className="mr-2" size={18} />
@@ -45,11 +45,11 @@ function Navbar({ activeSection }) {
       </div>
 
       {menuOpen ? (
-        <div className="border-t border-slate-200/80 bg-slate-50/95 px-4 py-4 shadow-sm dark:border-slate-800/80 dark:bg-slate-950/95 lg:hidden">
+        <div className="border-t border-slate-200/80 bg-slate-50/95 px-3 py-4 shadow-sm dark:border-slate-800/80 dark:bg-slate-950/95 sm:px-6 lg:hidden">
           <p className="mb-3 text-sm text-slate-600 dark:text-slate-300">
             Navegación rápida entre secciones.
           </p>
-          <nav className="space-y-2">
+          <nav className="max-h-[70vh] space-y-2 overflow-y-auto">
             {sections.map((section) => (
               <a
                 key={section.id}

@@ -6,7 +6,7 @@ function Sidebar({ activeSection }) {
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (
-    <aside className="hidden w-80 shrink-0 border-r border-slate-200 bg-white/80 p-6 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/80 lg:block">
+    <aside className="hidden w-72 shrink-0 border-r border-slate-200 bg-white/80 p-4 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/80 lg:block lg:w-80 lg:p-6">
       <div className="space-y-6">
         <div className="rounded-[1.5rem] border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 shadow-sm dark:border-slate-800 dark:from-slate-900 dark:to-slate-950">
           <p className="text-[11px] uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Índice</p>
