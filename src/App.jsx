@@ -3,6 +3,9 @@ import Layout from './components/layout/Layout'
 import { ThemeProvider } from './context/ThemeContext'
 import SectionContainer from './components/common/SectionContainer'
 import SectionHeader from './components/common/SectionHeader'
+import PdfDownloadButton from './components/common/PdfDownloadButton'
+import HeatMapCard from './components/common/HeatMapCard'
+import QrCard from './components/common/QrCard'
 import MarkdownSection from './components/sections/MarkdownSection'
 import { sections } from './data/sections'
 
@@ -73,6 +76,9 @@ function App() {
                   ))}
                 </div>
               </div>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <PdfDownloadButton />
+              </div>
             </div>
           </SectionContainer>
 
@@ -103,6 +109,13 @@ function App() {
                   </a>
                 </article>
               ))}
+            </div>
+          </SectionContainer>
+
+          <SectionContainer id="componentes-especiales" title="Componentes especiales">
+            <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+              <HeatMapCard />
+              <QrCard />
             </div>
           </SectionContainer>
 
