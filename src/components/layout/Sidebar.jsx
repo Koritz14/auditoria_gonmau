@@ -8,8 +8,8 @@ function Sidebar({ activeSection }) {
   return (
     <aside className="hidden w-80 shrink-0 border-r border-slate-200 bg-white/80 p-6 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/80 lg:block">
       <div className="space-y-6">
-        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Índice</p>
+        <div className="rounded-[1.5rem] border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 shadow-sm dark:border-slate-800 dark:from-slate-900 dark:to-slate-950">
+          <p className="text-[11px] uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Índice</p>
           <h2 className="mt-3 text-lg font-semibold text-slate-950 dark:text-slate-100">Secciones del informe</h2>
         </div>
 
@@ -20,7 +20,7 @@ function Sidebar({ activeSection }) {
               href={`#${section.id}`}
               className={`flex items-center justify-between rounded-3xl border px-4 py-3 text-sm transition ${
                 activeSection === section.id
-                  ? 'border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-950'
+                  ? 'border-slate-900 bg-slate-900 text-white shadow-sm dark:border-slate-100 dark:bg-slate-100 dark:text-slate-950'
                   : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-700 dark:hover:bg-slate-800'
               }`}
               aria-current={activeSection === section.id ? 'page' : undefined}
@@ -31,7 +31,7 @@ function Sidebar({ activeSection }) {
           ))}
         </nav>
 
-        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+        <div className="rounded-[1.25rem] border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
           <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200">
             <Home size={18} />
             <span>Acceso rápido</span>
@@ -51,8 +51,8 @@ function Sidebar({ activeSection }) {
       </button>
 
       {panelOpen ? (
-        <div className="mt-4 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
-          <p>La aplicación está construida para que cada sección del informe esté lista para renderizar su Markdown en la siguiente fase.</p>
+        <div className="mt-4 rounded-[1.25rem] border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+          <p>La aplicación está construida para que cada sección del informe esté lista para renderizar su Markdown con una lectura más clara.</p>
         </div>
       ) : null}
     </aside>

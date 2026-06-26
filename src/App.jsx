@@ -49,17 +49,49 @@ function App() {
               title="Informe de Auditoría de Seguridad"
               subtitle="Presentación interactiva del contenido del informe"
             />
-            <p className="max-w-3xl text-base leading-7 text-slate-700 dark:text-slate-300">
-              Esta aplicación está construida para presentar el informe existente mediante una arquitectura modular,
-              sin modificar el contenido del documento original.
-            </p>
+            <div className="overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 p-7 text-white shadow-[0_25px_80px_-25px_rgba(15,23,42,0.65)] dark:border-slate-700 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-3xl">
+                  <p className="text-sm font-semibold uppercase tracking-[0.35em] text-slate-300">
+                    Diseño visual mejorado
+                  </p>
+                  <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+                    Presentación profesional del informe académico y técnico.
+                  </h2>
+                  <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
+                    Esta aplicación organiza la información de forma clara, con jerarquía visual, tarjetas de navegación y una experiencia más cómoda para leer cada sección.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {['Modo claro/oscuro', 'Navegación clara', 'Lectura mejorada'].map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-sm font-medium text-slate-100 backdrop-blur"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
           </SectionContainer>
 
           <SectionContainer id="indice" title="Índice del informe">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {sections.map((section) => (
-                <article key={section.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{section.title}</h3>
+                <article
+                  key={section.id}
+                  className="group rounded-[1.5rem] border border-slate-200/80 bg-gradient-to-br from-slate-50 to-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:from-slate-900 dark:to-slate-950"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-sky-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">
+                      Sección
+                    </span>
+                    <span className="text-sm text-slate-400 transition group-hover:text-slate-600 dark:group-hover:text-slate-300">
+                      ↗
+                    </span>
+                  </div>
+                  <h3 className="mt-4 text-lg font-semibold text-slate-900 dark:text-slate-100">{section.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
                     {section.description || 'Sección del informe de auditoría'}
                   </p>
