@@ -148,28 +148,25 @@ Un atacante con privilegios suficientes podría alterar evidencias utilizadas pa
 
 ---
 
-## 2.6 Evaluación CVSS
+## 2.6 Evaluación del Riesgo (CVSS v3.1)
 
-La vulnerabilidad fue evaluada utilizando el estándar **CVSS v3.1**.
+Para determinar la severidad técnica de la vulnerabilidad SQL Injection de forma objetiva, se aplicó el estándar internacional **CVSS v3.1** (Common Vulnerability Scoring System). 
 
-| Métrica                  | Valor         |
-| ------------------------ | ------------- |
-| Attack Vector (AV)       | Network (N)   |
-| Attack Complexity (AC)   | Low (L)       |
-| Privileges Required (PR) | None (N)      |
-| User Interaction (UI)    | None (N)      |
-| Scope (S)                | Unchanged (U) |
-| Confidentiality (C)      | High (H)      |
-| Integrity (I)            | High (H)      |
-| Availability (A)         | Low (L)       |
+**Vector de Ataque Oficial:** `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L`
+**Puntaje Base Global:** 8.8 (Alto)
 
-### Puntaje CVSS Estimado
+### Justificación Detallada de las Métricas del Vector
 
-**8.8 / 10 — Alto**
+Para garantizar la rigurosidad del análisis, se justifica la selección de cada componente y valor del vector con base en el escenario técnico auditado:
 
-### Justificación
-
-La explotación puede realizarse remotamente mediante una simple petición web, sin requerir autenticación ni interacción de otros usuarios. Además, permite comprometer información sensible y potencialmente modificar datos críticos para el negocio.
+* **Vector de Ataque (AV:N - Network):** El exploit se ejecuta de forma completamente remota a través del protocolo HTTP/HTTPS, utilizando el navegador web para enviar el payload malicioso al portal de clientes de PagaFácil. No se requiere acceso físico ni local a la infraestructura.
+* **Complejidad del Ataque (AC:L - Low):** La complejidad es baja debido a que la aplicación web (DVWA en nivel Low) no implementa ningún mecanismo de defensa perimetral, firmas de WAF, ni lógica de sanitización intermedia. El atacante solo necesita ingresar caracteres especiales estándar (`' or '1'='1`) para alterar la consulta SQL.
+* **Privilegios Requeridos (PR:N - None):** El formulario de consulta web analizado es accesible de manera pública o no requiere que el atacante posea privilegios administrativos previos dentro de la base de datos para corromper la consulta; cualquier usuario con acceso a la URL del módulo puede iniciar el vector.
+* **Interacción del Usuario (UI:N - None):** El ataque es directo contra el servidor web. No se requiere engañar a un tercero ni se necesita que un usuario legítimo haga clic en un enlace o realice alguna acción complementaria para que la inyección SQL se ejecute con éxito.
+* **Alcance (S:U - Unchanged):** La explotación exitosa permite leer o modificar datos exclusivamente dentro del mismo motor de base de datos que aloja la aplicación web. El atacante no logra saltar el contexto hacia el sistema operativo subyacente del servidor web a través de este hallazgo específico.
+* **Confidencialidad (C:H - High):** Impacto crítico. Al alterar la lógica booleana de la consulta con `'1'='1`, el motor de base de datos devuelve la totalidad de los registros de la tabla afectada. En el contexto de PagaFácil, esto expone datos personales sensibles de los clientes, saldos de billeteras digitales e historiales de transacciones de forma masiva.
+* **Integridad (I:H - High):** Impacto crítico. Modificando el payload mediante operadores de apilamiento de consultas (`STACKED QUERIES`) o sentencias secundarias (ej: `UPDATE` o `DELETE`), un atacante posee la capacidad de alterar saldos de cuentas de clientes, manipular registros financieros legítimos o borrar bases de datos completas, destruyendo la fiabilidad de la información financiera.
+* **Disponibilidad (A:L - Low):** El impacto en la disponibilidad se evalúa como bajo. Aunque la vulnerabilidad no derriba el servidor web de forma nativa, un atacante sofisticado podría inyectar funciones de retardo de tiempo excesivo (como `SLEEP()`) de forma masiva o bloquear tablas críticas de transacciones, provocando una degradación notable del rendimiento del portal financiero.
 
 ---
 
