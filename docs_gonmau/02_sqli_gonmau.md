@@ -165,7 +165,7 @@ La vulnerabilidad fue evaluada utilizando el estándar **CVSS v3.1**.
 
 ### Puntaje CVSS Estimado
 
-**8.8 / 10 — Alto (High)**
+**8.8 / 10 — Alto**
 
 ### Justificación
 
@@ -193,21 +193,24 @@ $stmt = $pdo->prepare(
 $stmt->execute([$id]);
 ```
 
-### Validación de Entradas
+### Validación de Entradas (Defensa en Profundidad)
 
-Verificar que los datos recibidos correspondan al formato esperado antes de procesarlos.
+Consiste en verificar de forma estricta que los datos recibidos en el lado del servidor correspondan al tipo, longitud y formato esperado antes de ser procesados por cualquier lógica de negocio.
 
-Por ejemplo, si el identificador debe ser numérico:
+Por ejemplo, si el identificador `User ID` debe ser estrictamente numérico, se debe validar programáticamente antes de interactuar con la persistencia:
 
 ```php
 if (!is_numeric($id)) {
     exit("Entrada inválida");
 }
 ```
+Nota técnica de control: Si bien la validación de tipos (como is_numeric) actúa como una excelente capa de defensa secundaria, esta medida debe considerarse complementaria. La separación definitiva entre el código y los datos aportada por las consultas parametrizadas sigue siendo la salvaguarda primaria mandatoria para entradas de cualquier naturaleza (alfanuméricas o de texto libre).
 
 ### Principio de Mínimo Privilegio
 
-Las cuentas utilizadas por la aplicación deben poseer únicamente los permisos estrictamente necesarios para operar.
+La cuenta de conexión utilizada por la aplicación web hacia el motor de base de datos debe poseer exclusivamente los permisos estrictamente necesarios para la operación del negocio (operaciones DML como `SELECT`, `INSERT` y `UPDATE` sobre tablas específicas de la aplicación). 
+
+Se deben restringir de manera mandatoria los privilegios administrativos o de definición de datos (operaciones DDL como `DROP`, `ALTER` o `CREATE`), y revocar cualquier acceso a esquemas del sistema (como la tabla `mysql.user` o funciones de ejecución de comandos). Esto garantiza que, en caso de una falla en los controles preventivos, el atacante no pueda comprometer la integridad global del motor de datos.
 
 ### Desarrollo Seguro
 
