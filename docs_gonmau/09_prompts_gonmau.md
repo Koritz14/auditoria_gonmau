@@ -48,3 +48,9 @@ Existe una redundancia en la navegación, ya que actualmente se muestran dos ín
 ## 5. Arreglar problemas de contenido en pagina
 Revisa toda la interfaz de la aplicación y elimina cualquier texto o elemento que dé la impresión de que está "en desarrollo" o que funcione como nota informativa sobre la propia aplicación. Ahora que el proyecto está funcional, la interfaz debe verse como un producto terminado. Conserva únicamente la información relevante para el usuario y el contenido del informe, reemplazando o eliminando textos como "Diseño visual mejorado", "Presentación interactiva", "Diapositiva activa" u otros similares que parezcan temporales o de demostración.
 
+## 6. Arreglar falta de componentes para cada documento del informe
+Revisa la estructura del proyecto y verifica que cumpla con la organización solicitada por la evaluación. En particular, comprueba que cada archivo Markdown del informe tenga su correspondiente componente React dentro de `src/components/`, siguiendo la correspondencia indicada por el docente (por ejemplo: `01_resumen` → `Resumen.jsx`, `02_sqli` → `InyeccionSQL.jsx`, etc.) y que dichos componentes sean importados y utilizados desde `App.jsx` o desde la estructura de navegación que los integre.
+
+Si detectas que la implementación actual no sigue este esquema, refactoriza únicamente la arquitectura interna para cumplir con el requisito. **No modifiques la apariencia, el diseño, la navegación ni el comportamiento de la aplicación.** El resultado visual debe permanecer exactamente igual; únicamente debe cambiar la organización del código para ajustarse a la estructura esperada por la evaluación.
+
+Antes de realizar cambios, indica si la estructura actual cumple o no con este requisito y explica brevemente qué modificaciones son necesarias para adaptarla.
