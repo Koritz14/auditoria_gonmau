@@ -1,15 +1,48 @@
+import { useEffect, useState } from 'react'
 import Layout from './components/layout/Layout'
 import { ThemeProvider } from './context/ThemeContext'
 import SectionContainer from './components/common/SectionContainer'
 import SectionHeader from './components/common/SectionHeader'
-import MarkdownRenderer from './components/markdown/MarkdownRenderer'
-import { sections } from './data/sections'
 import MarkdownSection from './components/sections/MarkdownSection'
+import { sections } from './data/sections'
 
 function App() {
+  const [activeSection, setActiveSection] = useState('resumen')
+
+  useEffect(() => {
+    const sectionIds = sections.map((section) => section.id)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleSections = entries.filter((entry) => entry.isIntersecting)
+        if (visibleSections.length > 0) {
+          const topSection = visibleSections.reduce((current, entry) => {
+            return entry.boundingClientRect.top < current.boundingClientRect.top ? entry : current
+          })
+          setActiveSection(topSection.target.id)
+        }
+      },
+      {
+        root: null,
+        rootMargin: '-35% 0px -60% 0px',
+        threshold: 0,
+      }
+    )
+
+    sectionIds.forEach((id) => {
+      const element = document.getElementById(id)
+      if (element) {
+        observer.observe(element)
+      }
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
   return (
     <ThemeProvider>
-      <Layout>
+      <Layout activeSection={activeSection}>
         <div className="mx-auto max-w-7xl space-y-8">
           <SectionContainer>
             <SectionHeader

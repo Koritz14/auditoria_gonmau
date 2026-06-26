@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { sections } from '../../data/sections'
 import { ChevronRight, Home } from 'lucide-react'
 
-function Sidebar() {
+function Sidebar({ activeSection }) {
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (
@@ -18,7 +18,12 @@ function Sidebar() {
             <a
               key={section.id}
               href={`#${section.id}`}
-              className="flex items-center justify-between rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition hover:border-slate-300 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-700 dark:hover:bg-slate-800"
+              className={`flex items-center justify-between rounded-3xl border px-4 py-3 text-sm transition ${
+                activeSection === section.id
+                  ? 'border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-950'
+                  : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-700 dark:hover:bg-slate-800'
+              }`}
+              aria-current={activeSection === section.id ? 'page' : undefined}
             >
               <span>{section.title}</span>
               <ChevronRight size={18} />

@@ -4,7 +4,7 @@ import Sidebar from './Sidebar'
 import ScrollToTop from '../common/ScrollToTop'
 import { useTheme } from '../../context/ThemeContext'
 
-function Layout({ children }) {
+function Layout({ children, activeSection }) {
   const { theme } = useTheme()
   const wrapperClass =
     theme === 'dark'
@@ -13,9 +13,9 @@ function Layout({ children }) {
 
   return (
     <div className={wrapperClass}>
-      <Navbar />
+      <Navbar activeSection={activeSection} />
       <div className="flex min-h-[calc(100vh-124px)] pt-16 lg:pt-20">
-        <Sidebar />
+        <Sidebar activeSection={activeSection} />
         <main className="flex-1 px-4 py-6 lg:px-8 xl:px-12">
           {children}
         </main>
