@@ -4,8 +4,16 @@ import { ThemeProvider } from './context/ThemeContext.jsx'
 import SectionContainer from './components/common/SectionContainer'
 import SectionHeader from './components/common/SectionHeader'
 import PdfDownloadButton from './components/common/PdfDownloadButton'
-import MarkdownSection from './components/sections/MarkdownSection'
 import { sections } from './data/sections'
+import Resumen from './components/sections/Resumen'
+import InyeccionSQL from './components/sections/InyeccionSQL'
+import XSS from './components/sections/XSS'
+import InyeccionComandos from './components/sections/InyeccionComandos'
+import Activos from './components/sections/Activos'
+import MatrizRiesgo from './components/sections/MatrizRiesgo'
+import Controles from './components/sections/Controles'
+import Recuperacion from './components/sections/Recuperacion'
+import BitacoraIA from './components/sections/BitacoraIA'
 
 function App() {
   const [activeSection, setActiveSection] = useState('resumen')
@@ -43,6 +51,18 @@ function App() {
     const nextIndex = currentIndex === -1 || currentIndex === sections.length - 1 ? 0 : currentIndex + 1
     setActiveSection(sections[nextIndex].id)
   }
+
+  const SectionComponent = {
+    resumen: Resumen,
+    'inyeccion-sql': InyeccionSQL,
+    xss: XSS,
+    'inyeccion-comandos': InyeccionComandos,
+    activos: Activos,
+    matriz: MatrizRiesgo,
+    controles: Controles,
+    recuperacion: Recuperacion,
+    'bitacora-ia': BitacoraIA,
+  }[activeSectionData.id] ?? Resumen
 
   return (
     <ThemeProvider>
@@ -116,7 +136,7 @@ function App() {
                   {sections.findIndex((section) => section.id === activeSection) + 1} / {sections.length}
                 </div>
               </div>
-              <MarkdownSection section={activeSectionData} />
+              <SectionComponent section={activeSectionData} />
             </div>
           </SectionContainer>
         </div>
