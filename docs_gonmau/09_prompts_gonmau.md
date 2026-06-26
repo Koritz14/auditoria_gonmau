@@ -1,7 +1,7 @@
 # reflecciones y correcciones
-1. se corrigio 
+1. Se corrigieron cinco aspectos: el título "1.1 Introducción" fue reemplazado por "1.1 Contexto y Alcance" y se agregó que DVWA estaba configurado en nivel **Low** con una aclaración del alcance del entorno; en **1.3** se reordenaron los hallazgos de mayor a menor criticidad (Command Injection primero, luego SQL Injection, luego XSS) y se agregó una frase que lo justifica; en **1.4** se añadió un párrafo de cierre que vincula cada vulnerabilidad con su impacto específico; en **1.5** se reemplazó la expresión genérica "alta criticidad" por las clasificaciones concretas con sus scores CVSS (Crítico 9.8, Alto 8.8, Medio-alto 6.8); y en **1.6** se reemplazó la mención decorativa de los marcos por una referencia integrada que explica brevemente qué aporta cada uno (OWASP Top 10, CIS Controls, NIST CSF).
 
-# prompts
+# prompts (ChatGPT)
 ## 1. handoff con el contexto de la evaluacion
 Genera un archivo markdown tipo handoff para entregar a la IA con el contexto completo de esta evaluacion. Antes de responder, hazme tres preguntas técnicas o estratégicas para asegurarte de que tu respuesta sea exactamente lo que necesito.
 Repite este proceso hasta estar 99 % seguro de que puedes ofrecer una solución precisa y ajustada al contexto del problema informático.

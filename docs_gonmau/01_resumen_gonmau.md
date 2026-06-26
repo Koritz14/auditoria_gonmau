@@ -1,12 +1,12 @@
 # 1. Resumen Ejecutivo
 
-## 1.1 Introducción
+## 1.1 Contexto y Alcance
 
-El presente informe documenta los resultados de una auditoría de seguridad de la información realizada al portal de clientes de la empresa ficticia **PagaFácil**, organización perteneciente al sector **Fintech**, dedicada a la administración de billeteras digitales y servicios financieros electrónicos.
+El presente informe documenta los resultados de una auditoría de seguridad de aplicaciones web realizada al portal de clientes de la empresa ficticia **PagaFácil**, organización perteneciente al sector **Fintech**, dedicada a la administración de billeteras digitales y servicios financieros electrónicos.
 
-PagaFácil gestiona información crítica para la continuidad de su negocio, incluyendo datos personales de clientes, credenciales de autenticación, registros de transacciones financieras, saldos de billeteras digitales y otra información sensible relacionada con operaciones monetarias. Debido a la naturaleza de estos activos, la organización requiere mecanismos de protección robustos que garanticen la confidencialidad, integridad y disponibilidad de la información.
+PagaFácil gestiona información crítica para la continuidad de su negocio, incluyendo datos personales de clientes, credenciales de autenticación, registros de transacciones financieras, saldos de billeteras digitales y otra información sensible relacionada con operaciones monetarias. Debido a la naturaleza de estos activos, la organización requiere controles de seguridad que garanticen la confidencialidad, integridad y disponibilidad de la información.
 
-La auditoría fue desarrollada en un entorno controlado utilizando la plataforma **DVWA (Damn Vulnerable Web Application)**, configurada como laboratorio educativo para la identificación, explotación y análisis de vulnerabilidades comunes presentes en aplicaciones web. El objetivo principal fue evaluar los riesgos asociados a debilidades de seguridad que podrían afectar a una organización con características similares a las de PagaFácil.
+La auditoría fue desarrollada en un entorno controlado utilizando la plataforma **DVWA (Damn Vulnerable Web Application)**, configurada en nivel de seguridad **Low**, lo que representa el escenario más vulnerable y permite evidenciar las debilidades en su forma más directa. Los resultados son representativos de aplicaciones web con controles de seguridad insuficientes o ausentes. El objetivo principal fue evaluar los riesgos asociados a debilidades de seguridad que podrían afectar a una organización con características similares a las de PagaFácil.
 
 ## 1.2 Objetivos de la Auditoría
 
