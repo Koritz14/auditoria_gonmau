@@ -126,38 +126,25 @@ La explotación exitosa de XSS puede afectar la confianza de los clientes en la 
 
 ---
 
-## 4.6 Evaluación del Riesgo (CVSS v3.1)
+## 3.6 Evaluación del Riesgo (CVSS v3.1)
 
-Para determinar la severidad técnica de la vulnerabilidad de Inyección de Comandos (Command Injection) de manera objetiva, se aplicó el estándar internacional **CVSS v3.1** (Common Vulnerability Scoring System).
+Para determinar la severidad técnica de la vulnerabilidad Cross-Site Scripting (XSS Reflejado) de manera objetiva, se aplicó el estándar internacional **CVSS v3.1** (Common Vulnerability Scoring System).
 
-**Vector de Ataque Oficial:** `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H`
-**Puntaje Base Global:** 9.8 (Crítico)
+**Vector de Ataque Oficial:** `CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N`
+**Puntaje Base Global:** 6.1 (Medio)
 
 ### Desglose de Métricas del Vector Base
 
 | Métrica CVSS v3.1 | Componente Técnico | Valor Asignado | Impacto / Significado |
 | :--- | :--- | :--- | :--- |
-| **AV** (Attack Vector) | Vector de Ataque | **N** (Network) | Explotable 100% de forma remota a través de peticiones HTTP/HTTPS. |
-| **AC** (Attack Complexity) | Complejidad del Ataque | **L** (Low) | Baja; no requiere evadir WAF ni lidiar con sanitización alguna. |
-| **PR** (Privileges Required) | Privilegios Requeridos | **N** (None) | No requiere credenciales ni sesiones activas en el portal. |
-| **UI** (User Interaction) | Interacción del Usuario | **N** (None) | El exploit es directo; no requiere engañar a ningún usuario de la app. |
-| **S** (Scope) | Alcance | **C** (Changed) | **Cambia**; el control salta de la aplicación web al sistema operativo. |
-| **C** (Confidentiality) | Confidencialidad | **H** (High) | Máximo; permite leer archivos del sistema operativo, código fuente y secretos. |
-| **I** (Integrity) | Integridad | **H** (High) | Máximo; permite modificar archivos de configuración, inyectar scripts o borrar datos. |
-| **A** (Availability) | Disponibilidad | **H** (High) | Máximo; permite detener servicios, apagar el servidor o destruir la info. |
-
-### Justificación Detallada de las Métricas del Vector
-
-Para garantizar la máxima rigurosidad metodológica ante la auditoría de PagaFácil, se argumenta la selección técnica de cada componente:
-
-* **Vector de Ataque (AV:N - Network):** El ataque se propaga de forma remota a través de internet utilizando el protocolo HTTP/HTTPS. El atacante manipula el parámetro del formulario web para enviar el exploit sin requerir acceso físico o local a las instalaciones de la empresa.
-* **Complejidad del Ataque (AC:L - Low):** La complejidad es baja debido a que la aplicación web (DVWA en nivel Low) no implementa listas blancas, filtros de sanitización perimetral ni reglas en un firewall de aplicaciones (WAF). El atacante solo necesita concatenar comandos estándar del sistema operativo empleando operadores lógicos comunes (como `;`, `&&` o `|`).
-* **Privilegios Requeridos (PR:N - None):** El endpoint vulnerado se encuentra expuesto públicamente en el portal web y no restringe la funcionalidad a usuarios autenticados; cualquier atacante anónimo en la red puede ejecutar el vector de ataque.
-* **Interacción del Usuario (UI:N - None):** La vulnerabilidad se explota de manera directa apuntando a la api o formulario web del servidor. No se requiere engañar a un tercero, ni la interacción con administradores o clientes legítimos de la plataforma financiera para materializar el riesgo.
-* **Alcance (S:C - Changed):** El alcance **Cambia (Changed)** debido a que el fallo permite al atacante escapar por completo de las restricciones y el contexto lógico de la aplicación web (PHP/Servidor Web), logrando ejecutar instrucciones directamente sobre un componente de seguridad diferente e independiente: el shell del sistema operativo subyacente.
-* **Confidencialidad (C:H - High):** Impacto crítico. La inyección de comandos otorga la capacidad de leer archivos arbitrarios dentro del sistema de archivos con los privilegios del proceso web (`www-data`). En PagaFácil, esto permite el acceso a archivos de configuración del entorno (`.env`), llaves API de pasarelas de pago, tokens de infraestructura y las credenciales explícitas de conexión a la base de datos de los clientes.
-* **Integridad (I:H - High):** Impacto crítico. Un atacante con acceso a la terminal del servidor puede alterar código fuente de la plataforma, modificar archivos de configuración del servidor web, plantar *webshells* de persistencia y comprometer la veracidad de los datos financieros, destruyendo los controles de integridad lógicos implementados por el software.
-* **Disponibilidad (A:H - High):** Impacto crítico. Al poseer acceso directo al sistema operativo, un atacante remoto es capaz de ejecutar instrucciones destructivas (como borrados masivos mediante `rm -rf`), saturar los recursos de cómputo (ataques *fork-bomb*), detener servicios críticos (como el demonio de la base de datos o el propio servidor web) o forzar un apagado total del sistema, interrumpiendo indefinidamente las operaciones transaccionales de la Fintech.
+| **AV** (Attack Vector) | Vector de Ataque | **N** (Network) | Explotable de forma remota a través de HTTP/HTTPS. |
+| **AC** (Attack Complexity) | Complejidad del Ataque | **L** (Low) | Baja; no existen mecanismos de protección (WAF/filtros). |
+| **PR** (Privileges Required) | Privilegios Requeridos | **N** (None) | No requiere autenticación previa ni roles en el portal. |
+| **UI** (User Interaction) | Interacción del Usuario | **R** (Required) | Requiere que la víctima haga clic en el enlace inyectado. |
+| **S** (Scope) | Alcance | **C** (Changed) | **Cambia**; el script salta del servidor al navegador web. |
+| **C** (Confidentiality) | Confidencialidad | **L** (Low) | Permite la lectura local de datos y secuestro de sesiones. |
+| **I** (Integrity) | Integridad | **L** (Low) | Permite alteración visual del DOM y suplantación de forms. |
+| **A** (Availability) | Disponibilidad | **N** (None) | Nulo; la ejecución ocurre aislada en el cliente. |
 
 ### Justificación Detallada de las Métricas del Vector
 
@@ -171,7 +158,6 @@ Con el fin de asegurar la máxima rigurosidad en la auditoría de PagaFácil, se
 * **Confidencialidad (C:L - Low):** El impacto se evalúa como bajo en el servidor, pero crítico para el cliente afectado. El script inyectado permite al atacante acceder y leer datos locales del navegador de la víctima (como propiedades del DOM o tokens de sesión no protegidos), lo que en el escenario de PagaFácil facilita el secuestro de la sesión activa del cliente.
 * **Integridad (I:L - Low):** El impacto es bajo para el sistema central, pero afecta la integridad visual de la sesión de la víctima. Un atacante puede manipular dinámicamente el HTML mediante el DOM (DOM Manipulation), alterando los montos, los formularios de transferencia o suplantando la identidad visual del portal financiero para capturar credenciales mediante phishing localizado.
 * **Disponibilidad (A:N - None):** La explotación del XSS Reflejado no consume recursos de infraestructura del servidor web ni degrada los servicios centrales de PagaFácil; su ejecución ocurre exclusivamente en el navegador del cliente de forma aislada, por lo que el impacto en la disponibilidad es nulo.
-
 ---
 
 ## 3.7 Medidas de Prevención

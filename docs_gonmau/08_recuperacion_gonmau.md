@@ -1,63 +1,95 @@
-# 8. Mejora Tecnológica y Plan de Recuperación ante Desastres (Disaster Recovery Plan)
+# 8. Estrategia de Recuperación y Continuidad del Negocio
 
-## 8.1 Introducción y Alcance Fintech
+## 8.1 Objetivos de Recuperación (RTO y RPO)
 
-Las vulnerabilidades críticas identificadas en el portal web de **PagaFácil** (Inyección de Comandos, Inyección SQL y Cross-Site Scripting) evidencian la necesidad urgente de robustecer la infraestructura tecnológica y estructurar una estrategia de resiliencia operativa. En el ecosistema **Fintech**, la continuidad del negocio y la integridad inalterable de las transacciones son pilares mandatorios. Una indisponibilidad prolongada o la pérdida de registros financieros destruye la fe pública de la organización, gatilla sanciones regulatorias e inflige pérdidas económicas directas.
+Para garantizar la resiliencia operativa de **PagaFácil** ante incidentes de ciberseguridad de alto impacto (como la ejecución remota de comandos o el compromiso de la base de datos central), se definen formalmente los siguientes objetivos métricos de recuperación. Estos parámetros guían el diseño de la arquitectura de respaldos y los acuerdos de nivel de servicio (SLA) de la infraestructura:
 
-Este documento establece las propuestas de mejora tecnológica perimetral e interna y define el **Plan de Recuperación ante Desastres (DRP)** corporativo, diseñado para garantizar la restauración controlada y oportuna de los servicios críticos frente a incidentes de ciberseguridad catastróficos (como la toma de control del servidor a través del riesgo `R-01` o el compromiso de datos en `R-02`).
+* **Recovery Time Objective (RTO - Objetivo de Tiempo de Recuperación):** 2 horas.
+  * *Descripción:* Es el tiempo máximo tolerable desde la declaración del incidente hasta la restauración total del servicio de la plataforma web y las API de procesamiento transaccional en el entorno alterno de producción.
+* **Recovery Point Objective (RPO - Objetivo de Punto de Recuperación):** 15 minutos.
+  * *Descripción:* Es la cantidad máxima de datos transaccionales o registros financieros que la Fintech está dispuesta a perder ante un desastre, lo que exige mecanismos de replicación y respaldos altamente frecuentes para las bases de datos críticas.
 
 ---
 
-## 8.2 Propuestas de Mejora Tecnológica (Hardening e Infraestructura)
+## 8.2 Plan de Continuidad del Negocio (BCP)
 
-Para mitigar la superficie de ataque expuesta en la auditoría y dar cumplimiento a los marcos **CIS Controls** y **NIST Cybersecurity Framework (CSF)**, se determina la implementación obligatoria de las siguientes tecnologías:
+El Plan de Continuidad del Negocio establece las directrices organizacionales y operativas para mantener las funciones críticas de PagaFácil activas, o restablecerlas de forma degradada pero segura, durante la mitigación de un incidente de alto impacto.
 
-### 8.2.1 Despliegue de Web Application Firewall (WAF)
-*   **Mecanismo Técnico:** Implementación de un WAF en modo *Inline Block* para la inspección profunda de paquetes de la capa de aplicación (Capa 7 OSI).
-*   **Objetivo:** Mitigar de forma perimetral firmas y patrones de inyección de comandos (`cat /etc/passwd`, operadores `;`, `&&`), estructuras maliciosas SQL (`' OR '1'='1`) y vectores de inyección de scripts en el DOM antes de que impacten al servidor web de PagaFácil.
-*   **Alineación con Marcos:** CIS Control 16 (Application Software Security) y NIST CSF PR.PT-4.
+### 8.2.1 Fases del BCP frente a Incidentes de Ciberseguridad
 
-### 8.2.2 Segmentación Arquitectónica de Red (Arquitectura 3-Tier)
-*   **Mecanismo Técnico:** Aislar los activos lógicos y físicos mediante zonas de red claramente diferenciadas por firewalls de inspección de estado (Stateful Firewalls) y listas de control de acceso (ACL) estrictas:
-    *   **DMZ (Zona Desmilitarizada):** Aloja exclusivamente el Servidor Web / Aplicación (DVWA). No posee conexión directa a la base de datos de producción.
-    *   **Zona de Aplicaciones (Middleware):** Procesa la lógica de negocio y sanitización Fintech.
-    *   **Zona de Datos Intrabastión:** Aloja de forma aislada la Base de Datos de Clientes y el Historial de Transacciones, permitiendo únicamente conexiones provenientes de la IP estática del servidor de aplicaciones bajo el puerto específico del motor (ej: TCP 3306).
-*   **Alineación con Marcos:** CIS Control 4 (Secure Configuration of Enterprise Assets and Software).
-
-### 8.2.3 Centralización de Logs y Correlación de Eventos (SIEM)
-*   **Mecanismo Técnico:** Redirección mandatoria de logs de auditoría, eventos de sistema operativo (syslog), registros de consultas del motor de base de datos y logs de acceso web hacia un servidor de almacenamiento criptográfico e inalterable (SIEM centralizado).
-*   **Objetivo:** Monitorear y alertar en tiempo real anomalías como el acceso al archivo `/etc/passwd` o la ejecución de comandos no autorizados por parte del usuario del sistema web (`www-data`).
-*   **Alineación con Marcos:** CIS Control 8 (Audit Log Management) y NIST CSF DE.AE-1.
+1. **Activación y Declaración del Desastre:**
+   Si el equipo de seguridad determina que un atacante ha explotado la Inyección de Comandos (`R-01`) tomando control del sistema operativo, o ha ejecutado una exfiltración masiva vía SQLi (`R-02`), se notificará inmediatamente al Comité de Crisis para declarar el estado de desastre técnico si el RTO corre riesgo de superarse.
+2. **Operación en Contingencia y Suspensión Transaccional:**
+   * Se aislará el entorno de producción principal comprometido de forma inmediata de la red de procesamiento de pagos.
+   * Se activará el desvío de tráfico de red hacia una página de contingencia estática que informe de una "mantención programada", deshabilitando temporalmente el ingreso de nuevas transacciones para proteger el saldo y los fondos de los usuarios de billeteras digitales.
+3. **Comunicación Institucional:**
+   Activación de los canales de comunicación preestablecidos para informar de manera transparente pero controlada a las entidades reguladoras pertinentes, socios bancarios y clientes afectados, mitigando el impacto reputacional.
 
 ---
 
 ## 8.3 Plan de Recuperación ante Desastres (DRP)
 
-El DRP de PagaFácil opera bajo la premisa de compromiso total de la infraestructura web debido a incidentes de severidad Crítica o Alta. Su objetivo es restablecer las operaciones financieras limitando la pérdida de datos al umbral mínimo tolerable por el negocio.
+El Plan de Recuperación ante Desastres detalla las acciones técnicas e ingenieriles necesarias para reconstruir, sanear y restablecer los sistemas informáticos a su estado operativo seguro utilizando la infraestructura tecnológica alterna.
 
-### 8.3.1 Estrategia de Respaldo Diferenciada por Activo
-Para garantizar la consistencia de la información sin degradar el rendimiento del entorno transaccional, se definen políticas de respaldo automatizadas y cifradas bajo el algoritmo **AES-256**, aplicando la regla de respaldo **3-2-1** (3 copias, 2 medios distintos, 1 de ellos *off-site* / inmutable en la nube):
+### 8.3.1 Estrategia de Respaldos (Backup)
 
-| ID Activo | Activo de Información | Tipo de Respaldo | Frecuencia de Ejecución | Política de Retención | Mecanismo de Seguridad |
-| :---: | :--- | :--- | :--- | :--- | :--- |
-| **ACT-01** | Base de Datos de Clientes | Incremental / Snapshots | Cada 6 horas | Diario: 30 días<br>Mensual: 12 meses | Cifrado AES-256 + Control de acceso IAM estricto. |
-| **ACT-02** | Historial de Transacciones | Diferencial / Transaccional | Cada 1 hora (60 min) | Diario: 90 días<br>Anual: 5 años | Almacenamiento inmutable (*Write Once, Read Many* - WORM). |
-| **ACT-03** | Credenciales de Autenticación | Incremental | Cada 6 horas | Diario: 30 días | Almacenamiento en bóveda de llaves cifrada (Key Vault). |
-| **ACT-04** | Servidor Web / Aplicación | Imagen de Sistema (AMI / ISO) | Semanal o ante cambios | Últimas 3 versiones estables | Imagen base endurecida (*Hardened*) libre de vulnerabilidades. |
+Para soportar un RPO de 15 minutos en un entorno crítico Fintech, la política de respaldos se estructura de la siguiente manera:
+
+* **Bases de Datos Transaccionales:** Replicación síncrona en una zona de disponibilidad secundaria, complementada con capturas de transacciones (*Transaction Log Backups*) cada 15 minutos guardadas en repositorios de almacenamiento inmutables (WORM - *Write Once, Read Many*) para evitar que un atacante con acceso a la base de datos pueda borrarlas o alterarlas de manera maliciosa.
+* **Servidores de Aplicación e Imágenes (Inmutabilidad):** El código fuente y la configuración de los servidores web no se respaldan de forma tradicional; se manejan mediante **Infraestructura como Código (IaC)** y contenedores Docker. Ante un compromiso, la infraestructura se destruye por completo y se despliega una version limpia desde el repositorio de control de versiones seguro.
+* **Código Fuente y Parches:** Almacenados en repositorios distribuidos fuera de la red local de producción con autenticación multifactor (MFA) obligatoria y firmas criptográficas por commit.
+
+### 8.3.2 Procedimiento Técnico de Restauración de Servicios
+
+Ante una pérdida total o necesidad de saneamiento completo del entorno de producción debido a exploits de vulnerabilidades analizadas en este informe, el equipo de operaciones de TI ejecutará un procedimiento estructurado en las siguientes fases secuenciales:
+
+* **Fase 1:** Aislamiento Forense del Entorno Afectado.
+* **Fase 2:** Despliegue de Infraestructura Limpia mediante IaC (Infraestructura como Código).
+* **Fase 3:** Saneamiento Aplicativo y Carga de Base de Datos.
+* **Fase 4:** Validación de Seguridad (Sanity Checks) y Redirección de Tráfico.
+
+A continuación se detalla el paso a paso de la ejecución técnica:
+
+1. **Paso 1: Aislamiento Forense:** Apagar o aislar en una VLAN de cuarentena las instancias comprometidas de producción. Se preservarán los discos duros virtuales y logs externos para el posterior análisis forense digital.
+2. **Paso 2: Aprovisionamiento de Infraestructura Limpia:** Utilizando scripts de Terraform o AWS CloudFormation, se levanta un entorno productivo completamente nuevo y paralelo. Este proceso automatizado garantiza que el sistema operativo y el servidor web nazcan libres de cualquier *backdoor* o persistencia (como *web shells*) instalada por el atacante mediante la inyección de comandos.
+3. **Paso 3: Aplicación del Código Parchado:** Desplegar en la nueva infraestructura la versión del código que incorpora los controles preventivos obligatorios definidos en las **Políticas de Mitigación (Sección 7)** de este informe, erradicando las fallas de inyección de comandos y consultas SQL originarias.
+4. **Paso 4: Restauración de Datos y Roll-Forward:** Importar el último respaldo inmutable de la base de datos transaccional y aplicar la consolidación de los *Transaction Log Backups* disponibles, asegurando que cualquier pérdida de registros se mantenga estrictamente dentro del margen tolerable de 15 minutos definido por el RPO corporativo.
+5. **Paso 5: Pruebas de Humo y Seguridad (Sanity Checks):** Antes de exponer la nueva infraestructura al tráfico real, el equipo de Seguridad de la Información (SecOps) ejecutará scripts automatizados de análisis de vulnerabilidades dinámicas (DAST) y pruebas funcionales de regresión en la pasarela de pagos. Esto asegura la efectividad de los parches aplicados y la correcta activación de las configuraciones de endurecimiento (*hardening*) referenciadas previamente.
+6. **Paso 6: Redirección de Tráfico y Apertura de Puertas:** Una vez validadas las pruebas, se modifican las reglas del balanceador de carga o los registros de la red de entrega de contenido (CDN/DNS) para dirigir de forma progresiva (despliegue canario) el tráfico de los clientes hacia el nuevo entorno sano, finalizando formalmente el estado de contingencia técnica.
 
 ---
 
-### 8.3.2 Objetivos de Recuperación Operacional (RTO y RPO)
+## 8.4 Plan de Notificación ante Incidentes y Cumplimiento Regulatorio
 
-Para dar cumplimiento a los estándares de la industria Fintech y garantizar la resiliencia ante fraudes o secuestro de datos, se definen formalmente las siguientes métricas objetivo:
+Al operar en el sector Fintech bajo la identidad de **PagaFácil**, existe una obligación legal y regulatoria estricta de reportar brechas de seguridad que comprometan datos de carácter personal o transacciones financieras. El proceso de notificación se ejecutará en paralelo a la fase de contención técnica, estructurado según los siguientes plazos y destinatarios:
 
-*   **RTO (Recovery Time Objective): 4 Horas**
-    *   *Definición:* El tiempo máximo tolerable para restaurar la disponibilidad de la plataforma de cara a los clientes desde la declaración oficial del desastre. Cuatro horas es el límite crítico operativo antes de incurrir en pérdidas reputacionales severas y penalizaciones de entes reguladores financieros.
-*   **RPO (Recovery Point Objective): 1 Hora**
-    *   *Definición:* La cantidad máxima de datos transaccionales que la Fintech está dispuesta a perder en términos de tiempo. Al respaldar el Historial de Transacciones de forma horaria, ante un colapso total por inyección de comandos (`R-01`), la máxima pérdida de transacciones financieras registradas nunca superará los 60 minutos de operación.
+### 8.4.1 Matriz de Comunicación de Crisis
+
+| Destinatario | Plazo Máximo | Canal Oficial | Contenido del Reporte |
+| :--- | :---: | :--- | :--- |
+| **Entidades Reguladoras Financieras** | 24 Horas | Portal de Reportes de Incidentes (Ciberseguridad) | Descripción preliminar del incidente, activos de información afectados e impacto inicial estimado en la continuidad operacional. |
+| **Socios Bancarios y Proveedores de Pasarelas** | 12 Horas | Conexión de API Segura / Correo Encriptado | Indicadores de Compromiso (IoC) técnicos detectados para prevenir fraudes interbancarios o movimientos de capitales anómalos. |
+| **Clientes y Usuarios Afectados** | 48 Horas | Correo Electrónico Institucional y Notificación Push | Declaración de la brecha en lenguaje claro, medidas inmediatas tomadas por la Fintech y recomendaciones de seguridad para el usuario (p. ej., revocación y cambio de contraseñas). |
 
 ---
 
-### 8.3.3 Procedimiento de Recuperación ante Incidentes (Fases de Ejecución)
+## 8.5 Estrategia de Mejora Continua (Post-Incident Review)
 
-En caso de materializarse una intrusión exitosa que comprometa los activos del portal, el Equipo de Respuesta a Incidentes (CSIRT) de PagaFácil ejecutará de forma secuencial y obligatoria las siguientes fases bajo el marco **NIST SP 800-61 Rev. 2**:
+Para cumplir con la función de **Evolución** establecida en los marcos internacionales de ciberseguridad, **PagaFácil** no considera un incidente cerrado hasta que se complete la auditoría de lecciones aprendidas dentro de las 72 horas posteriores al restablecimiento total del servicio.
+
+### 8.5.1 Proceso de Análisis de Causa Raíz (RCA)
+El equipo de SecOps liderará una mesa técnica para documentar la línea de tiempo exacta del ataque. Se utilizará la metodología de los *5 Whys* (Cinco Porqués) para identificar la falla del proceso de desarrollo que permitió que un código sin sanitizar de entrada o salida (como el que originó la Inyección de Comandos o la Inyección SQL) fuese promovido al entorno de producción sin pasar por un pipeline automatizado de análisis estático (SAST).
+
+### 8.5.2 Actualización de la Postura Defensiva
+Los resultados del análisis forense y las debilidades descubiertas durante el ejercicio de recuperación se traducirán inmediatamente en:
+* Creación de nuevas firmas de bloqueo personalizadas en el Web Application Firewall (WAF).
+* Inclusión de los payloads específicos explotados dentro del set de pruebas automatizadas del pipeline de CI/CD para evitar regresiones de código.
+* Actualización de las matrices de riesgo operacional de la organización.
+
+---
+
+## 8.6 Conclusión del Plan de Continuidad y Recuperación
+
+La implementación estricta de este marco de BCP y DRP asegura que **PagaFácil** pueda transformar una crisis tecnológica potencialmente catastrófica en un evento operativo manejable, predecible y resiliente. 
+
+Al automatizar la reconstrucción de la infraestructura mediante Infraestructura como Código (IaC), asegurar la inmutabilidad de los respaldos financieros con un RPO de 15 minutos y estructurar canales de notificación transparentes, la Fintech no solo garantiza la preservación de los fondos de sus usuarios, sino que blinda el activo más difícil de recuperar tras un incidente de ciberseguridad: **la confianza digital de sus clientes y del mercado financiero.**
