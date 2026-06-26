@@ -2,7 +2,9 @@ import Layout from './components/layout/Layout'
 import { ThemeProvider } from './context/ThemeContext'
 import SectionContainer from './components/common/SectionContainer'
 import SectionHeader from './components/common/SectionHeader'
+import MarkdownRenderer from './components/markdown/MarkdownRenderer'
 import { sections } from './data/sections'
+import MarkdownSection from './components/sections/MarkdownSection'
 
 function App() {
   return (
@@ -26,7 +28,7 @@ function App() {
                 <article key={section.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{section.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                    Sección preparada para el renderizado de su contenido Markdown.
+                    {section.description || 'Sección del informe de auditoría'}
                   </p>
                   <a
                     href={`#${section.id}`}
@@ -40,9 +42,7 @@ function App() {
           </SectionContainer>
 
           {sections.map((section) => (
-            <SectionContainer key={section.id} id={section.id} title={section.title}>
-              <p className="text-slate-600 dark:text-slate-300">Contenido del informe disponible en el archivo: <strong>{section.filename}</strong>.</p>
-            </SectionContainer>
+            <MarkdownSection key={section.id} section={section} />
           ))}
         </div>
       </Layout>

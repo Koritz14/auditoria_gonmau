@@ -1,4 +1,4 @@
-import { GitHub, Calendar } from 'lucide-react'
+import { ExternalLink, Calendar } from 'lucide-react'
 
 function Footer() {
   return (
@@ -11,7 +11,7 @@ function Footer() {
         </div>
         <div className="flex flex-col gap-2 text-slate-600 dark:text-slate-400 lg:items-end">
           <a href="https://github.com/Koritz14" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100">
-            <GitHub size={16} /> Repositorio GitHub
+            <ExternalLink size={16} /> Repositorio GitHub
           </a>
           <div className="inline-flex items-center gap-2">
             <Calendar size={16} /> 2026
