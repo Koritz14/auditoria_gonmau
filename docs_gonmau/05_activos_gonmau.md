@@ -1,19 +1,18 @@
 # 5. Activos de Información y Riesgos del Negocio
 
-## 5.1 Identificación de Activos de Información
+## 5.1 Identificación y Valorización de Activos de Información
 
 Como empresa del sector **Fintech**, PagaFácil administra información de alto valor relacionada con servicios financieros digitales. La protección de estos activos resulta esencial para garantizar la continuidad operacional, la confianza de los clientes y el cumplimiento de las normativas aplicables.
 
-Durante la auditoría se identificaron los siguientes activos críticos de información.
+Para asegurar un análisis riguroso, cada activo ha sido valorizado cualitativamente en las tres dimensiones fundamentales de la seguridad de la información: **Confidencialidad (C)**, **Integridad (I)** y **Disponibilidad (D)**, utilizando una escala de criticidad (**Alto / Medio / Bajo**):
 
-| Activo de Información         | Clasificación                      | Descripción                                                                                                                                            |
-| ----------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Base de datos de clientes     | Información crítica                | Almacena datos personales, información de contacto, identificadores de clientes y otros antecedentes utilizados por la plataforma.                     |
-| Historial de transacciones    | Información financiera crítica     | Contiene registros de transferencias, pagos, movimientos de billeteras digitales y demás operaciones realizadas por los usuarios.                      |
-| Credenciales de autenticación | Información confidencial           | Incluye nombres de usuario, contraseñas cifradas, tokens de autenticación y datos utilizados para controlar el acceso al sistema.                      |
-| Infraestructura de servidores | Activo tecnológico crítico         | Comprende servidores web, servidores de aplicaciones, bases de datos y sistemas operativos que soportan la operación de la plataforma.                 |
-| Información financiera        | Información altamente confidencial | Corresponde a saldos, cuentas asociadas, medios de pago y demás información utilizada para la gestión financiera de los clientes.                      |
-| Registros de auditoría (Logs) | Información de soporte crítico     | Contienen evidencia de accesos, eventos de seguridad, actividades administrativas y operaciones relevantes para auditorías e investigaciones forenses. |
+| Activo de Información | Dimensión Lógica / Física | Confidencialidad (C) | Integridad (I) | Disponibilidad (D) | Descripción del Impacto en el Negocio |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Base de Datos de Clientes** | Datos / Lógico | **Alto** | **Alto** | **Medio** | Almacena datos personales (Rut, correos, fonos) e identificadores. Su fuga causa multas legales; su alteración destruye el control de usuarios. |
+| **Historial de Transacciones** | Datos / Lógico | **Alto** | **Alto** | **Alto** | Registros de transferencias y movimientos de billeteras. La alteración de estos datos destruye la contabilidad y la fe pública de la Fintech. |
+| **Credenciales de Autenticación** | Datos / Lógico | **Alto** | **Alto** | **Medio** | Hashes de contraseñas y tokens de acceso. Su compromiso permite la suplantación masiva de identidad y retiros de fondos no autorizados. |
+| **Servidor Web / Aplicación (DVWA)** | Infraestructura | **Medio** | **Alto** | **Alto** | Aloja el portal transaccional de PagaFácil. Si cae o es modificado, se detiene la operación del negocio y se corta el servicio a los clientes. |
+| **Código Fuente de la Plataforma** | Software / Propiedad | **Alto** | **Alto** | **Bajo** | Propiedad intelectual del backend de procesamiento. Su filtración expone nuevas vulnerabilidades de día cero a los atacantes. |
 
 ---
 
@@ -126,6 +125,14 @@ Entre los principales riesgos de negocio se identifican:
 * Costos asociados a la recuperación de sistemas, investigaciones forenses y respuesta ante incidentes.
 
 Debido a la naturaleza del negocio Fintech, donde la disponibilidad de los servicios y la protección de la información financiera son fundamentales, la materialización de cualquiera de estas amenazas podría generar un impacto significativo tanto operativo como económico.
+
+### Vinculación de Vectores Técnicos con los Activos del Negocio
+
+Cada uno de los hallazgos explotados en la primera fase de la auditoría se traduce de forma directa en la degradación de las dimensiones de seguridad de los activos previamente valorizados:
+
+1. **Inyección de Comandos (Módulo 04):** Apunta directamente al activo **Servidor Web / Aplicación (DVWA)**, logrando un impacto **Alto** en su Disponibilidad e Integridad al permitir el control total del sistema operativo y, por consiguiente, facilitando el acceso, manipulación o destrucción de todos los demás activos lógicos alojados en la infraestructura.
+2. **Inyección SQL (Módulo 02):** Explota la ausencia de sanitización en las consultas para impactar de forma **Alto** la Confidencialidad e Integridad de la **Base de Datos de Clientes** y el **Historial de Transacciones**, permitiendo a un agente malicioso exfiltrar registros sensibles o alterar saldos monetarios de manera arbitraria.
+3. **Cross-Site Scripting (Módulo 03):** Compromete de forma temporal las **Credenciales de Autenticación** y tokens de sesión activa en el navegador de la víctima, afectando la dimensión de Confidencialidad con un impacto focalizado pero crítico para la cuenta del usuario financiero afectado.
 
 ---
 
