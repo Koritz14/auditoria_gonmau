@@ -2,6 +2,8 @@
 Se corrigio los siguientes errores en la generacion del informe:
 
 1.  se corrigio un error de la IA donde califico el puntaje CVSS 6.8 como riesgo **medio-alto**, cuando la especificacion tecnica de CVSS especifica que el rango 4.0-6.9 es estrictamente **medio** 
+
+2. 
 # prompts (ChatGPT)
 ## 1. handoff con el contexto de la evaluacion
 Genera un archivo markdown tipo handoff para entregar a la IA con el contexto completo de esta evaluacion. Antes de responder, hazme tres preguntas técnicas o estratégicas para asegurarte de que tu respuesta sea exactamente lo que necesito.
@@ -9,3 +11,13 @@ Repite este proceso hasta estar 99 % seguro de que puedes ofrecer una solución 
 
 ## 2. Analisis del caso y generacion del informe
 Actúa como un Auditor de Seguridad de la Información y elabora un informe académico sobre una auditoría realizada a la empresa ficticia PagaFácil (Fintech), utilizando DVWA como entorno de pruebas. Desarrolla un resumen ejecutivo y analiza las vulnerabilidades de Inyección SQL, Cross-Site Scripting (XSS) e Inyección de Comandos, incluyendo descripción técnica, evidencias, impacto sobre el negocio, evaluación CVSS, medidas de prevención y controles de mitigación. Además, identifica los activos críticos de información, evalúa los riesgos mediante una matriz y mapa de calor, prioriza las vulnerabilidades y propone mejoras tecnológicas junto con un Plan de Recuperación ante Desastres (DR), manteniendo un enfoque técnico, académico y profesional.
+
+## 3. Evaluacion/correccion del informe
+Con el informe ya completo, ahora asumiendo el rol de un profesor de ingenieria en informatica y ciberseguridad exigente evalua segun la rubrica este informe.
+
+## 4. Pre generacion de instrucciones a copilot para crear aplicacion web en react
+el informe esta completo, ahora paso a la fase de generar la aplicacion web en react del informe, antes de empesar quiero saber que cosas deberia tener en cuenta para generar las instrucciones a darle a copilot para que cree la aplicacion web.
+
+Antes de responder, hazme tres preguntas técnicas o estratégicas para asegurarte de que tu respuesta sea exactamente lo que necesito.
+
+Repite este proceso hasta estar 99 % seguro de que puedes ofrecer una solución precisa y ajustada al contexto del problema informático.

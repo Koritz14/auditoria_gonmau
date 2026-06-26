@@ -2,7 +2,7 @@
 
 ## 1.1 Contexto y Alcance
 
-El presente informe documenta los resultados de una auditoría de seguridad de aplicaciones web realizada al portal de clientes de la empresa ficticia **PagaFácil**, organización perteneciente al sector **Fintech**, dedicada a la administración de billeteras digitales y servicios financieros electrónicos.
+El presente informe documenta los resultados de una auditoría de seguridad de aplicaciones web realizada al portal de clientes de la empresa **PagaFácil**, organización perteneciente al sector **Fintech**, dedicada a la administración de billeteras digitales y servicios financieros electrónicos.
 
 PagaFácil gestiona información crítica para la continuidad de su negocio, incluyendo datos personales de clientes, credenciales de autenticación, registros de transacciones financieras, saldos de billeteras digitales y otra información sensible relacionada con operaciones monetarias. Debido a la naturaleza de estos activos, la organización requiere controles de seguridad que garanticen la confidencialidad, integridad y disponibilidad de la información.
 
