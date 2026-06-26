@@ -22,13 +22,13 @@ Adicionalmente, se evaluó la relación entre dichas vulnerabilidades y los acti
 
 ## 1.3 Principales Hallazgos
 
-Durante la ejecución de la auditoría se identificaron vulnerabilidades que permiten comprometer distintos niveles de la infraestructura tecnológica y de la información administrada por la organización.
+Durante la ejecución de la auditoría se identificaron vulnerabilidades que permiten comprometer distintos niveles de la infraestructura tecnológica y de la información administrada por la organización. A continuación se presentan los hallazgos en orden de criticidad descendente.
+
+La vulnerabilidad de **Inyección de Comandos** permitió ejecutar comandos directamente sobre el sistema operativo del servidor a través de parámetros manipulados por un atacante. Este escenario representa el riesgo más crítico identificado, ya que podría facilitar el acceso al servidor, la obtención de información sensible, la alteración de configuraciones o incluso el compromiso total de la infraestructura.
 
 La vulnerabilidad de **Inyección SQL** evidenció la posibilidad de manipular consultas realizadas a la base de datos mediante entradas de usuario insuficientemente validadas. Este tipo de ataque podría permitir el acceso no autorizado a información sensible, incluyendo datos de clientes, registros financieros y credenciales de autenticación.
 
 La vulnerabilidad de **Cross-Site Scripting (XSS)** demostró la capacidad de ejecutar código JavaScript malicioso dentro del navegador de los usuarios. Un atacante podría utilizar esta técnica para robar sesiones activas, capturar información confidencial o realizar acciones fraudulentas en nombre de usuarios legítimos.
-
-Por su parte, la vulnerabilidad de **Inyección de Comandos** permitió ejecutar comandos directamente sobre el sistema operativo del servidor a través de parámetros manipulados por un atacante. Este escenario representa uno de los riesgos más críticos identificados, ya que podría facilitar el acceso al servidor, la obtención de información sensible, la alteración de configuraciones o incluso el compromiso total de la infraestructura.
 
 ## 1.4 Impacto Potencial para el Negocio
 
@@ -45,13 +45,15 @@ Entre los principales impactos identificados se encuentran:
 * Posibles incumplimientos normativos relacionados con la protección de datos y la seguridad de la información.
 * Pérdidas económicas derivadas de fraude, sanciones regulatorias o interrupciones operativas.
 
-Considerando que las organizaciones Fintech basan gran parte de su modelo de negocio en la confianza digital y la protección de activos financieros, la materialización de estos riesgos podría afectar significativamente la continuidad operacional de la empresa.
+La Inyección de Comandos representa la amenaza más grave al comprometer directamente el servidor y todos los activos alojados en él. La Inyección SQL afecta principalmente la confidencialidad e integridad de los datos almacenados en la base de datos, mientras que el Cross-Site Scripting expone a los usuarios a robo de sesiones activas y acciones fraudulentas ejecutadas en su nombre.
+
+Considerando que las organizaciones Fintech basan gran parte de su modelo de negocio en la confianza digital y la protección de activos financieros, la materialización de cualquiera de estos riesgos podría afectar significativamente la continuidad operacional de la empresa.
 
 ## 1.5 Evaluación General del Riesgo
 
-El análisis realizado permitió concluir que las vulnerabilidades identificadas presentan un nivel de riesgo relevante para la organización.
+El análisis realizado permitió concluir que las vulnerabilidades identificadas presentan un nivel de riesgo alto para la organización, con una vulnerabilidad clasificada en el nivel más crítico.
 
-La Inyección SQL y la Inyección de Comandos fueron clasificadas como riesgos de alta criticidad debido a su potencial para comprometer información sensible y sistemas críticos. Por otro lado, la vulnerabilidad Cross-Site Scripting presenta un impacto considerable sobre los usuarios y la seguridad de las sesiones, manteniendo un nivel de riesgo elevado aunque generalmente inferior al de las anteriores.
+La Inyección de Comandos fue clasificada como riesgo **crítico** (CVSS 9.8), dado su potencial para comprometer completamente la infraestructura tecnológica. La Inyección SQL fue clasificada como riesgo **alto** (CVSS 8.8) por su capacidad para exponer y modificar información sensible almacenada en la base de datos. El Cross-Site Scripting presenta un nivel de riesgo **medio-alto** (CVSS 6.8), con impacto concentrado en las sesiones de los usuarios y la integridad de la información mostrada en el navegador.
 
 La combinación de estas vulnerabilidades evidencia deficiencias relacionadas con la validación de entradas, la sanitización de datos, el control de privilegios y la implementación de mecanismos de seguridad defensivos en la aplicación.
 
@@ -61,4 +63,4 @@ Los resultados obtenidos demuestran que la aplicación evaluada presenta vulnera
 
 Las debilidades identificadas reflejan problemas comunes de desarrollo seguro y resaltan la importancia de implementar controles preventivos desde las etapas iniciales del ciclo de vida del software. Asimismo, se evidencia la necesidad de complementar estas medidas mediante mecanismos de monitoreo, detección, respuesta ante incidentes y recuperación operativa.
 
-Finalmente, se concluye que la adopción de prácticas alineadas con marcos de referencia reconocidos, como OWASP, CIS Controls y NIST Cybersecurity Framework, permitiría reducir significativamente la superficie de ataque y fortalecer la postura de seguridad de PagaFácil frente a amenazas actuales y futuras.
+Finalmente, se concluye que la adopción de prácticas alineadas con marcos reconocidos como **OWASP Top 10** (que categoriza las vulnerabilidades identificadas entre los principales riesgos de aplicaciones web), **CIS Controls** (orientado a la implementación de controles técnicos y operativos) y el **NIST Cybersecurity Framework** (como guía estructural para las funciones de protección, detección y recuperación), permitiría reducir significativamente la superficie de ataque y fortalecer la postura de seguridad de PagaFácil frente a amenazas actuales y futuras.
