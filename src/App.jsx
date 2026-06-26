@@ -51,31 +51,19 @@ function App() {
           <SectionContainer>
             <SectionHeader
               title="Informe de Auditoría de Seguridad"
-              subtitle="Presentación interactiva del contenido del informe"
+              subtitle="Resumen técnico del proyecto"
             />
             <div className="overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 p-5 text-white shadow-[0_25px_80px_-25px_rgba(15,23,42,0.65)] dark:border-slate-700 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 sm:p-7 lg:p-8">
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                <div className="max-w-3xl">
-                  <p className="text-sm font-semibold uppercase tracking-[0.35em] text-slate-300">
-                    Diseño visual mejorado
-                  </p>
-                  <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
-                    Presentación profesional del informe académico y técnico.
-                  </h2>
-                  <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-                    Ahora cada sección se muestra como una diapositiva independiente, con navegación rápida desde el índice y un recorrido mucho más claro para el lector.
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {['Modo claro/oscuro', 'Navegación clara', 'Lectura mejorada'].map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-sm font-medium text-slate-100 backdrop-blur"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
+              <div className="max-w-3xl">
+                <p className="text-sm font-semibold uppercase tracking-[0.35em] text-slate-300">
+                  Informe de auditoría
+                </p>
+                <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+                  Análisis de seguridad del proyecto
+                </h2>
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+                  Navega por las secciones con el índice lateral para revisar el contenido del informe y los hallazgos de seguridad.
+                </p>
               </div>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <PdfDownloadButton />
@@ -83,18 +71,20 @@ function App() {
             </div>
           </SectionContainer>
 
-          <SectionContainer id={activeSectionData.id} title={`Diapositiva activa: ${activeSectionData.title}`}>
+          <SectionContainer id={activeSectionData.id} title={activeSectionData.title}>
             <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">
-                  Presentación interactiva
+                  Sección actual
                 </p>
                 <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                   {activeSectionData.title}
                 </h3>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-400">
-                  {activeSectionData.description || 'Contenido del informe preparado para lectura en modo diapositiva.'}
-                </p>
+                {activeSectionData.description ? (
+                  <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-400">
+                    {activeSectionData.description}
+                  </p>
+                ) : null}
               </div>
               <div className="flex flex-wrap gap-2">
                 <button
