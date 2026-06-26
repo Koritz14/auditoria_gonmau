@@ -6,7 +6,9 @@ El presente informe documenta los resultados de una auditoría de seguridad de a
 
 PagaFácil gestiona información crítica para la continuidad de su negocio, incluyendo datos personales de clientes, credenciales de autenticación, registros de transacciones financieras, saldos de billeteras digitales y otra información sensible relacionada con operaciones monetarias. Debido a la naturaleza de estos activos, la organización requiere controles de seguridad que garanticen la confidencialidad, integridad y disponibilidad de la información.
 
-La auditoría fue desarrollada en un entorno controlado utilizando la plataforma **DVWA (Damn Vulnerable Web Application)**, configurada en nivel de seguridad **Low**, lo que representa el escenario más vulnerable y permite evidenciar las debilidades en su forma más directa. Los resultados son representativos de aplicaciones web con controles de seguridad insuficientes o ausentes. El objetivo principal fue evaluar los riesgos asociados a debilidades de seguridad que podrían afectar a una organización con características similares a las de PagaFácil.
+La auditoría fue desarrollada en un entorno controlado utilizando la plataforma **DVWA (Damn Vulnerable Web Application)**, configurada en nivel de seguridad **Low**, lo que representa el escenario más vulnerable y permite identificar los vectores de ataque sin la interferencia de mecanismos de mitigación perimetrales. Los resultados son representativos de aplicaciones web con controles de seguridad insuficientes o ausentes. El objetivo principal fue evaluar los riesgos asociados a debilidades de seguridad que podrían afectar a una organización con características similares a las de PagaFácil.
+
+Como resultado global de este proceso, se identificaron, analizaron y categorizaron un total de **tres (3) vulnerabilidades de seguridad**, distribuidas según su nivel de severidad técnica bajo el estándar CVWA/CVSS v3.1 en: **una (1) vulnerabilidad de severidad Crítica (Inyección de Comandos), una (1) de severidad Alta (Inyección SQL) y una (1) de severidad Media (Cross-Site Scripting)**. Este conjunto de hallazgos expone una superficie de ataque que compromete de forma directa los pilares de la seguridad de la información de la plataforma.
 
 ## 1.2 Objetivos de la Auditoría
 
@@ -53,7 +55,7 @@ Considerando que las organizaciones Fintech basan gran parte de su modelo de neg
 
 El análisis realizado permitió concluir que las vulnerabilidades identificadas presentan un nivel de riesgo alto para la organización, con una vulnerabilidad clasificada en el nivel más crítico.
 
-La Inyección de Comandos fue clasificada como riesgo **crítico** (CVSS 9.8), dado su potencial para comprometer completamente la infraestructura tecnológica. La Inyección SQL fue clasificada como riesgo **alto** (CVSS 8.8) por su capacidad para exponer y modificar información sensible almacenada en la base de datos. El Cross-Site Scripting presenta un nivel de riesgo **medio-alto** (CVSS 6.8), con impacto concentrado en las sesiones de los usuarios y la integridad de la información mostrada en el navegador.
+La Inyección de Comandos fue clasificada como riesgo **crítico** (CVSS 9.8), dado su potencial para comprometer completamente la infraestructura tecnológica. La Inyección SQL fue clasificada como riesgo **alto** (CVSS 8.8) por su capacidad para exponer y modificar información sensible almacenada en la base de datos. El Cross-Site Scripting presenta un nivel de riesgo medio (CVSS 6.8), con impacto concentrado en las sesiones de los usuarios y la integridad de la información mostrada en el navegador.
 
 La combinación de estas vulnerabilidades evidencia deficiencias relacionadas con la validación de entradas, la sanitización de datos, el control de privilegios y la implementación de mecanismos de seguridad defensivos en la aplicación.
 
