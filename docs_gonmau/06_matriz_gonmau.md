@@ -1,106 +1,95 @@
 # 6. Matriz de Riesgo y Mapa de Calor
 
-## 6.1 Evaluación de Riesgos
+## 6.1 Metodología de Evaluación de Riesgos
 
-Una vez identificadas las vulnerabilidades presentes en el portal web de PagaFácil, se realizó una evaluación de riesgos considerando dos variables fundamentales:
+La evaluación de los riesgos identificados en el portal web de **PagaFácil** se realiza mediante un análisis cuantitativo y cualitativo bidimensional, combinando la **Probabilidad** de ocurrencia del escenario de amenaza con el **Impacto** directo sobre los activos de información y la continuidad del negocio. 
 
-* **Probabilidad:** posibilidad de que una vulnerabilidad sea explotada por un atacante.
-* **Impacto:** consecuencias que tendría la explotación sobre los activos de información y la continuidad del negocio.
+Para cumplir con los estándares corporativos de gestión de riesgos, se adopta una **Matriz de Priorización de $5 \times 5$**.
 
-La combinación de ambas variables permite determinar el nivel de riesgo de cada vulnerabilidad y establecer prioridades para su tratamiento.
+### Criterios de Clasificación de Probabilidad
+La probabilidad determina la frecuencia estimada o la viabilidad técnica de que un vector de ataque explote con éxito la vulnerabilidad:
 
-Para esta auditoría se utilizaron cuatro niveles de clasificación.
+| Nivel | Probabilidad | Descripción Técnica |
+| :---: | :--- | :--- |
+| **1** | Muy Baja | La explotación es teórica, requiere condiciones extremadamente raras, nula exposición o un nivel de sofisticación propio de un actor de estado (APT). |
+| **2** | Baja | La explotación es posible pero compleja; requiere eludir controles concurrentes y conocimientos muy especializados. |
+| **3** | Media | La explotación es viable; existen herramientas de prueba públicas, pero requiere ciertas condiciones operacionales o autenticación previa. |
+| **4** | Alta | La vulnerabilidad es conocida, expuesta públicamente y puede explotarse con relativa facilidad mediante herramientas automatizadas estándar. |
+| **5** | Muy Alta | Explotación remota trivial, sin restricciones de red ni requerimientos de autenticación, con alto potencial de replicación y automatización (scripts públicos activos). |
 
-| Probabilidad | Descripción                                                                                                             |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| Baja         | La explotación requiere condiciones poco comunes o conocimientos muy especializados.                                    |
-| Media        | La explotación es posible, pero requiere ciertas condiciones o recursos adicionales.                                    |
-| Alta         | La vulnerabilidad puede explotarse con relativa facilidad utilizando herramientas disponibles públicamente.             |
-| Muy Alta     | La explotación puede realizarse fácilmente de forma remota, con pocas restricciones y alto potencial de automatización. |
+### Criterios de Clasificación de Impacto
+El impacto evalúa la degradación de las dimensiones de **Confidencialidad, Integridad y Disponibilidad (C-I-A)** sobre el activo afectado y sus consecuencias financieras, legales y reputacionales para la Fintech:
 
-| Impacto | Descripción                                                                                                               |
-| ------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Bajo    | Afecta mínimamente la operación del negocio.                                                                              |
-| Medio   | Produce afectaciones parciales en algunos activos o procesos.                                                             |
-| Alto    | Compromete activos críticos y puede generar pérdidas económicas importantes.                                              |
-| Crítico | Puede provocar el compromiso de la infraestructura, pérdida masiva de información o interrupción de servicios esenciales. |
-
----
-
-## 6.2 Matriz de Riesgos
-
-La siguiente tabla resume la evaluación realizada para cada una de las vulnerabilidades identificadas durante la auditoría.
-
-| Vulnerabilidad             | Probabilidad | Impacto | Nivel de Riesgo | CVSS |
-| -------------------------- | ------------ | ------- | --------------- | ---- |
-| Inyección SQL              | Muy Alta     | Alto    | Alto            | 8.8  |
-| Cross-Site Scripting (XSS) | Alta         | Medio   | Medio           | 6.8  |
-| Inyección de Comandos      | Muy Alta     | Crítico | Crítico         | 9.8  |
-
-### Justificación de la Evaluación
-
-**Inyección SQL**
-
-Presenta una probabilidad muy alta debido a que puede explotarse mediante simples peticiones HTTP manipuladas, sin requerir autenticación compleja. Su impacto es alto porque permite acceder o modificar información crítica almacenada en la base de datos, incluyendo datos personales, credenciales e información financiera.
-
-**Cross-Site Scripting (XSS)**
-
-Su probabilidad es alta debido a la facilidad con la que puede inyectarse código JavaScript cuando la aplicación no valida adecuadamente las entradas. No obstante, requiere interacción del usuario para ejecutarse, lo que reduce parcialmente su severidad. El impacto se considera medio, ya que afecta principalmente las sesiones de los usuarios y la información mostrada en el navegador.
-
-**Inyección de Comandos**
-
-Corresponde al riesgo más elevado identificado durante la auditoría. La vulnerabilidad permite ejecutar comandos directamente sobre el servidor sin autenticación, comprometiendo la confidencialidad, integridad y disponibilidad de la infraestructura tecnológica. Su impacto es crítico debido a la posibilidad de obtener control del sistema operativo y afectar todos los activos alojados en el servidor.
+| Nivel | Impacto | Descripción de Afectación en el Negocio |
+| :---: | :--- | :--- |
+| **1** | Insignificante | Sin impacto financiero ni operativo discernible. Afectación nula de datos sensibles. |
+| **2** | Menor | Interrupción mínima del servicio sin pérdida de datos. Impacto reputacional contenido internamente. |
+| **3** | Moderado | Afectación parcial de sistemas no críticos. Alteración de registros internos recuperables sin exposición masiva. |
+| **4** | Mayor | Compromiso grave de activos críticos, acceso no autorizado a datos personales o transaccionales controlados. Sanciones regulatorias moderadas. |
+| **5** | Catastrófico | Compromiso total de la infraestructura core, fuga masiva de datos financieros/personales de clientes, interrupción prolongada del servicio financiero y pérdidas económicas críticas. |
 
 ---
 
-## 6.3 Mapa de Calor
+## 6.2 Matriz de Riesgos Correlacionada
 
-El siguiente mapa de calor representa gráficamente la posición de cada vulnerabilidad según su probabilidad e impacto.
+A continuación, se presenta la matriz donde el nivel de riesgo final se calcula intersecando la Probabilidad y el Impacto, heredando directamente la severidad técnica del análisis **CVSS v3.1** y la criticidad del negocio.
 
-| Impacto / Probabilidad | Baja | Media | Alta       | Muy Alta                 |
-| ---------------------- | ---- | ----- | ---------- | ------------------------ |
-| **Crítico**            | 🟠   | 🔴    | 🔴         | 🔴 **Command Injection** |
-| **Alto**               | 🟡   | 🟠    | 🟠         | 🟠 **SQL Injection**     |
-| **Medio**              | 🟢   | 🟡    | 🟡 **XSS** | 🟠                       |
-| **Bajo**               | 🟢   | 🟢    | 🟡         | 🟡                       |
+| ID | Vulnerabilidad | Probabilidad (1-5) | Impacto (1-5) | Nivel de Riesgo | Score CVSS v3.1 |
+| :---: | :--- | :---: | :---: | :---: | :---: |
+| **R-01** | Inyección de Comandos | 5 (Muy Alta) | 5 (Catastrófico) | **Crítico** | 9.8 |
+| **R-02** | Inyección SQL | 5 (Muy Alta) | 4 (Mayor) | **Alto** | 8.8 |
+| **R-03** | Cross-Site Scripting (XSS) | 4 (Alta) | 3 (Moderado) | **Medio** | 6.8 |
 
-**Leyenda**
+### Justificación Paramétrica y Alineación de Negocio
 
-* 🟢 Bajo
-* 🟡 Medio
-* 🟠 Alto
-* 🔴 Crítico
-
-El mapa evidencia que la Inyección de Comandos constituye la amenaza más severa para PagaFácil, seguida por la Inyección SQL. Aunque Cross-Site Scripting presenta un nivel de riesgo inferior, continúa siendo una vulnerabilidad relevante debido a su capacidad para comprometer sesiones de usuarios y facilitar ataques dirigidos.
+* **R-01: Inyección de Comandos (Riesgo: Crítico)**
+  * **Justificación:** Al permitir la ejecución arbitraria de comandos en el sistema operativo del servidor web con privilegios elevados, el atacante obtiene control total de la infraestructura subyacente. Dado el ecosistema Fintech de PagaFácil, esto implica la capacidad de alterar la disponibilidad del servicio, destruir logs de auditoría e pivotar hacia la red interna de procesamiento de pagos. Su impacto hereda el nivel **Catastrófico** debido a la destrucción potencial de la continuidad operacional.
+* **R-02: Inyección SQL (Riesgo: Alto)**
+  * **Justificación:** Clasificada con probabilidad **Muy Alta** debido a la ausencia de sanitización en los parámetros HTTP que interactúan directamente con el motor de base de datos. El impacto se determina como **Mayor** (Nivel 4), ya que compromete directamente la *Confidencialidad* e *Integridad* del repositorio de datos corporativo, permitiendo la extracción de credenciales, hashes de acceso e información de saldos de las billeteras digitales.
+* **R-03: Cross-Site Scripting (XSS) (Riesgo: Medio)**
+  * **Justificación:** Presenta una probabilidad **Alta** al no contar con filtros de codificación de salida en los formularios web expuestos. Sin embargo, su impacto se contiene en **Moderado** (Nivel 3) debido a que requiere obligatoriamente de la interacción de la víctima (ingeniería social) para ejecutar el payload y secuestrar tokens de sesión en el navegador, limitando el compromiso directo de la infraestructura central.
 
 ---
 
-## 6.4 Priorización de Vulnerabilidades
+## 6.3 Mapa de Calor ($5 \times 5$)
 
-Con base en la evaluación de riesgos, la severidad CVSS, el impacto sobre el negocio y la facilidad de explotación, se establece el siguiente orden de prioridad para el tratamiento de las vulnerabilidades.
+Representación gráfica de la distribución de las amenazas en función de sus coordenadas de riesgo. 
 
-| Prioridad | Vulnerabilidad             | Justificación                                                                                                                                                                                                                                                 |
-| --------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **1**     | Inyección de Comandos      | Permite la ejecución remota de comandos sobre el servidor, con potencial compromiso total de la infraestructura tecnológica y de los activos críticos de la organización. Presenta el mayor puntaje CVSS (9.8) y el impacto más alto sobre el negocio.        |
-| **2**     | Inyección SQL              | Permite acceder, modificar o eliminar información almacenada en la base de datos, afectando directamente la confidencialidad e integridad de datos personales y financieros. Su explotación es sencilla y representa un alto riesgo para una empresa Fintech. |
-| **3**     | Cross-Site Scripting (XSS) | Aunque puede provocar robo de sesiones y manipulación del contenido mostrado al usuario, requiere interacción de la víctima para su explotación, reduciendo parcialmente su criticidad frente a las demás vulnerabilidades.                                   |
+| Impacto / Probabilidad | 1. Muy Baja | 2. Baja | 3. Media | 4. Alta | 5. Muy Alta |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **5. Catastrófico** | 🟠 | 🔴 | 🔴 | 🔴 | 🔴 **[R-01]** |
+| **4. Mayor** | 🟡 | 🟠 | 🟠 | 🔴 | 🔴 **[R-02]** |
+| **3. Moderado** | 🟢 | 🟡 | 🟡 | 🟠 **[R-03]** | 🟠 |
+| **2. Menor** | 🟢 | 🟢 | 🟡 | 🟡 | 🟡 |
+| **1. Insignificante** | 🟢 | 🟢 | 🟢 | 🟡 | 🟡 |
+
+**Leyenda de Criticidad de Riesgo:**
+* 🟢 **Bajo** (Aceptable temporalmente bajo monitoreo).
+* 🟡 **Medio** (Requiere mitigación programada a mediano plazo).
+* 🟠 **Alto** (Requiere atención e implementación de controles a corto plazo).
+* 🔴 **Crítico** (Requiere mitigación inmediata; detención o reestructuración del despliegue).
+
+---
+
+## 6.4 Priorización de Vulnerabilidades para el Plan de Acción
+
+Derivado del cruce matemático y técnico anterior, se establece el orden estricto de remediación:
+
+1. **Prioridad 1 — Inyección de Comandos [R-01]:** Mitigación inmediata mediante la erradicación de funciones que invoquen el shell del sistema operativo (`exec`, `system`, `passthru`) y la implementación de listas blancas rigurosas de argumentos.
+2. **Prioridad 2 — Inyección SQL [R-02]:** Reestructuración de la capa de acceso a datos a través de la implementación mandatoria de consultas preparadas (Prepared Statements) con mapeo de tipos de datos estáticos en todas las API transaccionales.
+3. **Prioridad 3 — Cross-Site Scripting (XSS) [R-03]:** Sanitización contextual y codificación (*encoding*) de todas las entradas del usuario antes de ser renderizadas en el DOM, complementado con el despliegue de una política de seguridad de contenido (CSP) restrictiva.
 
 ---
 
 ## 6.5 Relación entre Riesgo Técnico y Riesgo de Negocio
 
-Los resultados obtenidos muestran una relación directa entre la severidad técnica de las vulnerabilidades y el riesgo para la continuidad operacional de PagaFácil.
-
-Las vulnerabilidades con mayor puntaje CVSS afectan directamente los activos más importantes de la organización, como la infraestructura tecnológica, las bases de datos y la información financiera de los clientes. Esto incrementa significativamente la probabilidad de pérdidas económicas, fraude, incumplimiento normativo y deterioro de la reputación corporativa.
-
-En consecuencia, resulta prioritario implementar controles preventivos y correctivos sobre las vulnerabilidades de mayor criticidad antes de abordar aquellas con menor impacto.
+La distribución en el mapa de calor evidencia que las debilidades de la aplicación web de PagaFácil no son meras fallas de desarrollo aisladas, sino brechas críticas con repercusión financiera directa. Un exploit exitoso sobre **R-01** o **R-02** rompe el principio de confianza digital exigido a las Fintech, gatillando de forma automática:
+* Infracciones regulatorias graves ante los entes fiscalizadores financieros por desprotección de datos sensibles (datos personales y financieros de los clientes).
+* Pérdidas económicas directas derivadas del fraude transaccional o el secuestro de infraestructura (Ransomware).
+* Efecto de fuga de clientes debido al daño reputacional colateral irreversible.
 
 ---
 
 ## 6.6 Conclusión
 
-La matriz de riesgos y el mapa de calor permitieron establecer una visión clara del nivel de exposición de PagaFácil frente a las vulnerabilidades identificadas durante la auditoría.
-
-La Inyección de Comandos fue clasificada como el riesgo más crítico debido a su capacidad para comprometer completamente la infraestructura tecnológica. La Inyección SQL ocupa el segundo nivel de prioridad por el riesgo que representa para la información almacenada en la base de datos. Finalmente, Cross-Site Scripting, aunque presenta una severidad menor, continúa representando una amenaza importante para la seguridad de los usuarios y la integridad de la aplicación.
-
-Esta priorización proporciona una base objetiva para definir las medidas de prevención, mitigación y fortalecimiento tecnológico que se desarrollan en las siguientes secciones del informe.
+La adopción de la matriz corporativa de $5 \times 5$ otorga a la gerencia de PagaFácil una visibilidad cuantitativa y objetiva de su postura de seguridad actual. El mapa es concluyente: el core del negocio está expuesto a un nivel de riesgo inadmisible enfocado en la ejecución remota de código y la manipulación de base de datos. Los esfuerzos y recursos técnicos del equipo de ingeniería deben volcarse de forma prioritaria al tratamiento inmediato de las prioridades 1 y 2 para devolver la plataforma a un umbral operativo seguro.
