@@ -1,5 +1,4 @@
 import SectionContainer from '../common/SectionContainer'
-import SectionHeader from '../common/SectionHeader'
 import MarkdownRenderer from '../markdown/MarkdownRenderer'
 import { useMarkdown } from '../../hooks/useMarkdown'
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Layout from './components/layout/Layout'
-import { ThemeProvider } from './context/ThemeContext'
+import { ThemeProvider } from './context/ThemeContext.jsx'
 import SectionContainer from './components/common/SectionContainer'
 import SectionHeader from './components/common/SectionHeader'
 import PdfDownloadButton from './components/common/PdfDownloadButton'

@@ -1,19 +1,25 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { ThemeContext } from './themeContext'
 
-const ThemeContext = createContext()
+function getInitialTheme() {
+  if (typeof window === 'undefined') {
+    return 'light'
+  }
+
+  const storedTheme = window.localStorage.getItem('theme')
+  if (storedTheme === 'dark' || storedTheme === 'light') {
+    return storedTheme
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('light')
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem('theme')
-    if (saved === 'dark' || saved === 'light') {
-      setTheme(saved)
-    }
-  }, [])
+  const [theme, setTheme] = useState(getInitialTheme)
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
+    document.documentElement.style.colorScheme = theme
     window.localStorage.setItem('theme', theme)
   }, [theme])
 
@@ -27,10 +33,3 @@ export function ThemeProvider({ children }) {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
-export function useTheme() {
-  const context = useContext(ThemeContext)
-  if (!context) {
-    throw new Error('useTheme must be used within ThemeProvider')
-  }
-  return context
-}

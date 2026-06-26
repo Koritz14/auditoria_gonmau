@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Moon, Sun, Menu, X } from 'lucide-react'
-import { useTheme } from '../../context/ThemeContext'
+import { useTheme } from '../../context/useTheme'
 import { sections } from '../../data/sections'
 
 function Navbar({ activeSection }) {
