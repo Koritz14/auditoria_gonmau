@@ -8,7 +8,9 @@ Esta vulnerabilidad ocurre cuando una aplicación incorpora datos proporcionados
 
 XSS es una de las vulnerabilidades más comunes en aplicaciones web y se encuentra incluida dentro de las principales categorías de riesgo identificadas por OWASP.
 
-En el contexto de una empresa Fintech como PagaFácil, una vulnerabilidad XSS podría permitir el robo de sesiones autenticadas, la captura de credenciales, la manipulación de transacciones y la ejecución de acciones fraudulentas en nombre de usuarios legítimos.
+En el contexto específico de una organización Fintech como **PagaFácil**, las consecuencias de una vulnerabilidad XSS Reflejada se extienden mucho más allá de un vector estético o una alerta emergente en pantalla. 
+
+Al ejecutarse el código de manera arbitraria en el navegador del cliente, un atacante sofisticado puede comprometer directamente la sesión activa mediante la exfiltración de tokens de autenticación o el secuestro de cookies que no posean atributos de protección avanzados. Asimismo, mediante la manipulación dinámica del DOM (Document Object Model), el atacante es capaz de alterar visualmente la interfaz de la billetera digital en tiempo real; esto permite redirigir transferencias electrónicas a cuentas de terceros, modificar montos de transacciones sin el consentimiento del usuario y suplantar formularios de pago para capturar credenciales críticas (Phishing localizado), destruyendo la confianza depositada en la plataforma financiera.
 
 ---
 
@@ -124,28 +126,38 @@ La explotación exitosa de XSS puede afectar la confianza de los clientes en la 
 
 ---
 
-## 3.6 Evaluación CVSS
+## 3.6 Evaluación del Riesgo (CVSS v3.1)
 
-La vulnerabilidad fue evaluada utilizando el estándar CVSS v3.1.
+Para determinar la severidad técnica de la vulnerabilidad Cross-Site Scripting (XSS Reflejado) de manera objetiva, se aplicó el estándar internacional **CVSS v3.1** (Common Vulnerability Scoring System).
 
-| Métrica                  | Valor        |
-| ------------------------ | ------------ |
-| Attack Vector (AV)       | Network (N)  |
-| Attack Complexity (AC)   | Low (L)      |
-| Privileges Required (PR) | None (N)     |
-| User Interaction (UI)    | Required (R) |
-| Scope (S)                | Changed (C)  |
-| Confidentiality (C)      | High (H)     |
-| Integrity (I)            | Low (L)      |
-| Availability (A)         | None (N)     |
+**Vector de Ataque Oficial:** `CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N`
+**Puntaje Base Global:** 6.1 (Medio)
 
-### Puntaje CVSS Estimado
+### Desglose de Métricas del Vector Base
 
-**6.8 / 10 — Medio-Alto (Medium)**
+| Métrica CVSS v3.1 | Componente Técnico | Valor Asignado | Impacto / Significado |
+| :--- | :--- | :--- | :--- |
+| **AV** (Attack Vector) | Vector de Ataque | **N** (Network) | Explotable de forma remota a través de HTTP/HTTPS. |
+| **AC** (Attack Complexity) | Complejidad del Ataque | **L** (Low) | Baja; no existen mecanismos de protección (WAF/filtros). |
+| **PR** (Privileges Required) | Privilegios Requeridos | **N** (None) | No requiere autenticación previa ni roles en el portal. |
+| **UI** (User Interaction) | Interacción del Usuario | **R** (Required) | Requiere que la víctima haga clic en el enlace inyectado. |
+| **S** (Scope) | Alcance | **C** (Changed) | **Cambia**; el script salta del servidor al navegador web. |
+| **C** (Confidentiality) | Confidencialidad | **L** (Low) | Permite la lectura local de datos y secuestro de sesiones. |
+| **I** (Integrity) | Integridad | **L** (Low) | Permite alteración visual del DOM y suplantación de forms. |
+| **A** (Availability) | Disponibilidad | **N** (None) | Nulo; la ejecución ocurre aislada en el cliente. |
 
-### Justificación
+### Justificación Detallada de las Métricas del Vector
 
-La explotación requiere que un usuario interactúe con contenido manipulado por el atacante. Sin embargo, una vez ejecutado el código malicioso, es posible comprometer sesiones autenticadas, capturar información sensible y realizar acciones no autorizadas dentro de la aplicación.
+Con el fin de asegurar la máxima rigurosidad en la auditoría de PagaFácil, se argumenta técnicamente la selección de cada componente:
+
+* **Vector de Ataque (AV:N - Network):** El ataque se propaga de forma remota a través de la red empleando el protocolo HTTP/HTTPS. El atacante inyecta el script malicioso a través de parámetros URL o campos de formularios web, sin requerir acceso físico o local a la infraestructura del servidor.
+* **Complejidad del Ataque (AC:L - Low):** La complejidad es baja debido a que la aplicación web (DVWA en nivel Low) no implementa cabeceras de seguridad, filtros de saneamiento, ni reglas de inspección perimetral (WAF) que bloqueen etiquetas HTML o sentencias ejecutables de JavaScript.
+* **Privilegios Requeridos (PR:N - None):** No se requiere que el atacante posea una cuenta autenticada ni privilegios previos en el portal web para explotar la falla. El vector de XSS Reflejado puede ser enviado a cualquier usuario de internet de forma abierta.
+* **Interacción del Usuario (UI:R - Required):** A diferencia de las inyecciones SQL, el XSS Reflejado **requiere obligatoriamente la interacción de una víctima**. El atacante debe inducir al usuario legítimo de PagaFácil a realizar una acción, típicamente hacer clic en un enlace malicioso hipervinculado o un vector de phishing que gatille la carga del parámetro vulnerado.
+* **Alcance (S:C - Changed):** El alcance **Cambia (Changed)** debido a que la ejecución exitosa del script malicioso vulnera el entorno de Sandbox del navegador web de la víctima. El atacante logra ejecutar código arbitrario dentro del contexto de ejecución del cliente, un entorno de seguridad distinto y ajeno al software del servidor web que aloja la aplicación.
+* **Confidencialidad (C:L - Low):** El impacto se evalúa como bajo en el servidor, pero crítico para el cliente afectado. El script inyectado permite al atacante acceder y leer datos locales del navegador de la víctima (como propiedades del DOM o tokens de sesión no protegidos), lo que en el escenario de PagaFácil facilita el secuestro de la sesión activa del cliente.
+* **Integridad (I:L - Low):** El impacto es bajo para el sistema central, pero afecta la integridad visual de la sesión de la víctima. Un atacante puede manipular dinámicamente el HTML mediante el DOM (DOM Manipulation), alterando los montos, los formularios de transferencia o suplantando la identidad visual del portal financiero para capturar credenciales mediante phishing localizado.
+* **Disponibilidad (A:N - None):** La explotación del XSS Reflejado no consume recursos de infraestructura del servidor web ni degrada los servicios centrales de PagaFácil; su ejecución ocurre exclusivamente en el navegador del cliente de forma aislada, por lo que el impacto en la disponibilidad es nulo.
 
 ---
 
