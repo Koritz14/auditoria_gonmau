@@ -1,16 +1,93 @@
-# React + Vite
+# Auditoría de Seguridad Web – Informe Interactivo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto consiste en una aplicación web desarrollada con React, Vite y Tailwind CSS para presentar de forma visual y profesional un informe académico de auditoría de seguridad web.
 
-Currently, two official plugins are available:
+El contenido técnico del informe se encuentra en la carpeta [docs_gonmau](docs_gonmau) y la aplicación sirve como interfaz interactiva para navegar por las distintas secciones del documento.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Propósito del proyecto
 
-## React Compiler
+La aplicación permite explorar un informe de seguridad que abarca:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Resumen ejecutivo
+- Inyección SQL
+- Cross-Site Scripting (XSS)
+- Inyección de comandos
+- Activos identificados
+- Matriz de riesgos
+- Controles recomendados
+- Plan de recuperación
+- Bitácora de uso de IA
 
-## Expanding the ESLint configuration
+## Características principales
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Navegación por secciones del informe
+- Renderizado de contenido desde archivos Markdown
+- Diseño responsive para escritorio, tablet y móviles
+- Estilo moderno con tema claro/oscuro
+- Botón para descarga de versión en PDF
+- Estructura preparada para despliegue en Vercel
+
+## Tecnologías utilizadas
+
+- React 19
+- Vite 8
+- Tailwind CSS 4
+- React Markdown
+- Lucide React
+- ESLint
+
+## Requisitos previos
+
+Asegúrate de tener instalado:
+
+- Node.js 18 o superior
+- npm 9 o superior
+
+## Instalación
+
+1. Clona este repositorio.
+2. Instala las dependencias:
+
+```bash
+npm install
+```
+
+3. Inicia el servidor de desarrollo:
+
+```bash
+npm run dev
+```
+
+4. Abre la URL que indique Vite en tu navegador.
+
+## Scripts disponibles
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run lint
+```
+
+## Estructura del proyecto
+
+```text
+src/
+  components/      # Componentes reutilizables y secciones
+  context/         # Contexto de tema
+  data/            # Configuración de secciones
+  hooks/           # Hooks personalizados
+  services/        # Carga de contenido Markdown
+  App.jsx          # Componente principal
+
+docs_gonmau/        # Fuente principal del contenido del informe
+public/docs_gonmau/ # Copia pública de los documentos Markdown
+```
+
+## Nota importante
+
+El contenido del informe se considera la fuente principal de verdad del proyecto y debe mantenerse en [docs_gonmau](docs_gonmau). La aplicación solo se encarga de presentarlo de forma interactiva y visualmente más clara.
+
+## Autor
+
+Proyecto desarrollado como parte de una evaluación académica relacionada con seguridad de la información y presentación de informes técnicos.
