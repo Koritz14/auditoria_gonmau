@@ -1,7 +1,5 @@
-# reflecciones y correcciones
-Se corrigio los siguientes errores en la generacion del informe:
-
-1.  se corrigio un error de la IA donde califico el puntaje CVSS 6.8 como riesgo **medio-alto**, cuando la especificacion tecnica de CVSS especifica que el rango 4.0-6.9 es estrictamente **medio** 
+# refleccion
+El uso de IA como chatbot es util para recopilar y analisar informacion, aunque debe ser supervisada. En algunas ocasiones la IA invento o genero datos incoherentes con lo que se habia desarrollado previamente, especialmente cuando se abre un chat nuevo. La IA como agente por otro lado es mas como un asistente al cual se le puede delegar el desarrollo del proyecto, aun que almenos en el caso de copilot este tiene una falta de criterio, algunos de los errores que cometio por falta de este son indices duplicados  la barra de navegacion no sigue la pantalla, esto pasa por que la IA no usa la apliacion solo revisa que el contenido este, aun con instrucciones detalladas es necesaria la supervicion.
 
 2. 
 # prompts (ChatGPT)
